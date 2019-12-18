@@ -39,12 +39,14 @@ func LoadTranslations(apiClient ApiTranslationsClient, c *config.Config) error {
 		return err
 	}
 
+	totalKeys := len(list)
+	currKey := 0
 	for key, tokensList := range list {
 		fmt.Println("============================")
-		fmt.Println("Upload for key: " + key)
-		total := len(tokensList)
-		cur := 0
+		fmt.Println(fmt.Sprintf("Uploadin keys %v / %v. Current: %s", currKey, totalKeys, key))
 
+		totalTokens := len(tokensList)
+		currToken := 0
 		for tokenKey, translations := range tokensList {
 			params := strings.Fields(key)
 			orgID := params[0]
@@ -55,10 +57,11 @@ func LoadTranslations(apiClient ApiTranslationsClient, c *config.Config) error {
 			if err != nil {
 				log.Fatalf("Can'emailType load trranslation: %s", err)
 			} else {
-				cur++
+				currToken++
 			}
-			fmt.Println(fmt.Sprintf("%v / %v", total, cur))
+			fmt.Println(fmt.Sprintf("%v / %v", currToken, totalTokens))
 		}
+		currKey++
 	}
 
 	return nil
@@ -87,7 +90,7 @@ func getTranslationsList(c *config.Config) (translationsList, error) {
 		tokensPerType := map[string]map[string]map[string]string{}
 		for _, file := range files {
 			if isFileBlacklisted(c, file) {
-				fmt.Printf("Skipping, file %s blacklisted.", file)
+				fmt.Println(fmt.Sprintf("Skipping, file %s blacklisted.", file))
 				continue
 			}
 
@@ -177,12 +180,12 @@ func getLocale(locale string) string {
 
 func isFileBlacklisted(c *config.Config, filename string) bool {
 	if strings.Contains(filename, "sncf-") && c.OrgIDSNCF == "" {
-		fmt.Printf("SNCF orgID wasn't passed")
+		fmt.Printf("SNCF orgID wasn't passed ")
 		return true
 	}
 
 	if strings.Contains(filename, "thalys-") && c.OrgIDThalys == "" {
-		fmt.Println("Thalys orgID wasn't passed")
+		fmt.Println("Thalys orgID wasn't passed ")
 		return true
 	}
 

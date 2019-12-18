@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/abarkhanov/ttu/internal/config"
@@ -13,7 +12,6 @@ func New() *cli.App {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("123")
 
 	app := &cli.App{
 		Name:     "Tpl email translations uploader",
