@@ -79,6 +79,69 @@ func Load() (*Config, error) {
 	return cfg, nil
 }
 
+func Confirm(cfg *Config) (isReadyForStart bool, err error) {
+	isReadyForStart = false
+	fmt.Println("================================================================================================")
+	fmt.Println("Check your config: ")
+	fmt.Println("================================================================================================")
+	fmt.Println(fmt.Sprintf("TRANSLATIONS_PATH            : %s ", cfg.TranslationsPath))
+	fmt.Println(fmt.Sprintf("TARGET_API_HOST              : %s ", cfg.TargetAPIHost))
+	fmt.Println(fmt.Sprintf("ORGID_SNCF                   : %s ", cfg.OrgIDSNCF))
+	fmt.Println(fmt.Sprintf("ORGID_THALYS                 : %s ", cfg.OrgIDThalys))
+	fmt.Println(fmt.Sprintf("TARGET_API_AUTHORIZATION_KEY : %s ", cfg.TargetAPIAuthorizationKey))
+	fmt.Println("================================================================================================")
+	if cfg.OrgIDSNCF == "" {
+		fmt.Println("Note! Translations won't be uploaded for SNCF")
+	}
+	if cfg.OrgIDThalys == "" {
+		fmt.Println("Note! Translations won't be uploaded for Thalys")
+	}
+	if cfg.OrgIDSNCF == "" && cfg.OrgIDThalys == "" {
+		fmt.Println("Note! Will be uploaded only default translations")
+	}
+	fmt.Println("================================================================================================")
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print("Do you want to start? (y/n):")
+	v, err := reader.ReadString('\n')
+	if err != nil {
+		return isReadyForStart, err
+	}
+	v = strings.TrimSpace(strings.TrimSuffix(v, "\n"))
+
+	if v == "y" {
+		isReadyForStart = true
+	}
+
+	if v == "n" {
+		isReadyForStart = false
+	}
+
+	if isReadyForStart == false {
+		fmt.Println("Exit...")
+	} else {
+		fmt.Println("Starting...")
+	}
+
+	return isReadyForStart, nil
+}
+
+func Validate(cfg *Config) error {
+	if cfg.TranslationsPath == "" {
+		return errors.New("parameter TRANSLATIONS_PATH not set")
+	}
+
+	if cfg.TargetAPIAuthorizationKey == "" {
+		return errors.New("parameter TARGET_API_AUTHORIZATION_KEY not set")
+
+	}
+
+	if cfg.TargetAPIHost == "" {
+		return errors.New("parameter TARGET_API_HOST not set")
+	}
+
+	return nil
+}
+
 func promtParameter(paramName string, required bool) (string, error) {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print(fmt.Sprintf("Enter %s: ", paramName))

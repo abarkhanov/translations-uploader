@@ -14,12 +14,12 @@ func uploadTranslations() error {
 		return err
 	}
 
-	err = validateConfig(cfg)
+	err = config.Validate(cfg)
 	if err != nil {
 		return err
 	}
 
-	isReadyForStart, err := confirmConfig(cfg)
+	isReadyForStart, err := config.Confirm(cfg)
 	if err != nil {
 		return err
 	}

@@ -43,7 +43,7 @@ func LoadTranslations(apiClient ApiTranslationsClient, c *config.Config) error {
 	currKey := 0
 	for key, tokensList := range list {
 		fmt.Println("============================")
-		fmt.Println(fmt.Sprintf("Uploadin keys %v / %v. Current: %s", currKey, totalKeys, key))
+		fmt.Println(fmt.Sprintf("Uploading keys %v / %v. Current: %s", currKey, totalKeys, key))
 
 		totalTokens := len(tokensList)
 		currToken := 0
@@ -171,9 +171,9 @@ func getTranslationsKey(c *config.Config, filename string) string {
 	}
 	t := strings.ReplaceAll(filename, ".yaml", "")
 
-	// tmp
+	// tmp - Remove this if when enum naming will be fixed
 	if strings.Contains(t, "trip-cancelled") {
-		t = strings.ReplaceAll(filename, "trip-cancelled", "trip-canceled")
+		t = strings.ReplaceAll(t, "trip-cancelled", "trip-canceled")
 	}
 
 	return orgID + " " + t
