@@ -16,7 +16,7 @@ func TestLoad(t *testing.T) {
 
 	err := os.Setenv("TRANSLATIONS_PATH", path)
 	require.NoError(t, err)
-	err = os.Setenv("TARGET_API_KEY", key)
+	err = os.Setenv("TARGET_API_AUTHORIZATION_KEY", key)
 	require.NoError(t, err)
 	err = os.Setenv("TARGET_API_HOST", host)
 	require.NoError(t, err)
@@ -25,7 +25,7 @@ func TestLoad(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, path, c.TranslationsPath)
-	assert.Equal(t, key, c.TargetAPIKey)
+	assert.Equal(t, key, c.TargetAPIAuthorizationKey)
 	assert.Equal(t, host, c.TargetAPIHost)
 }
 
@@ -35,7 +35,7 @@ func TestLoadNoAPIHost(t *testing.T) {
 
 	err := os.Setenv("TRANSLATIONS_PATH", path)
 	require.NoError(t, err)
-	err = os.Setenv("TARGET_API_KEY", key)
+	err = os.Setenv("TARGET_API_AUTHORIZATION_KEY", key)
 	require.NoError(t, err)
 
 	_, err = Load()
@@ -54,5 +54,5 @@ func TestLoadNoAPIKey(t *testing.T) {
 
 	_, err = Load()
 	require.Error(t, err)
-	assert.Equal(t, "required key TARGET_API_KEY missing value", err.Error())
+	assert.Equal(t, "required key TARGET_API_AUTHORIZATION_KEY missing value", err.Error())
 }

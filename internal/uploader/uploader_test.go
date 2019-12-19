@@ -19,7 +19,7 @@ func TestLoadTranslations(t *testing.T) {
 
 	err := os.Setenv("TRANSLATIONS_PATH", path)
 	require.NoError(t, err)
-	err = os.Setenv("TARGET_API_KEY", key)
+	err = os.Setenv("TARGET_API_AUTHORIZATION_KEY", key)
 	require.NoError(t, err)
 	err = os.Setenv("TARGET_API_HOST", host)
 	require.NoError(t, err)

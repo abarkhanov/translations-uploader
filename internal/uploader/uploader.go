@@ -171,6 +171,11 @@ func getTranslationsKey(c *config.Config, filename string) string {
 	}
 	t := strings.ReplaceAll(filename, ".yaml", "")
 
+	// tmp
+	if strings.Contains(t, "trip-cancelled") {
+		t = strings.ReplaceAll(filename, "trip-cancelled", "trip-canceled")
+	}
+
 	return orgID + " " + t
 }
 
