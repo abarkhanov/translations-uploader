@@ -16,6 +16,7 @@ var blacklistedFiles = map[string]struct{}{
 	"cancellation-reasons.yaml": struct{}{},
 	"locale-config.yaml":        struct{}{},
 	"vehicle-class.yaml":        struct{}{},
+	"sms.yaml":                  struct{}{},
 }
 
 type translationsList map[string]map[string][]map[string]string
