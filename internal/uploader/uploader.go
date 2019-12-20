@@ -173,9 +173,9 @@ func getTranslationsKey(c *config.Config, filename string) string {
 	t := strings.ReplaceAll(filename, ".yaml", "")
 
 	// tmp - Remove this if when enum naming will be fixed
-	if strings.Contains(t, "trip-cancelled") {
-		t = strings.ReplaceAll(t, "trip-cancelled", "trip-canceled")
-	}
+	//if strings.Contains(t, "trip-cancelled") {
+	//	t = strings.ReplaceAll(t, "trip-cancelled", "trip-canceled")
+	//}
 
 	return orgID + " " + t
 }

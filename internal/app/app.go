@@ -11,16 +11,15 @@ func New() (*cli.App, error) {
 	app := &cli.App{
 		Commands: initCommands(),
 	}
-	app.Name = "Translation uploader"
+	app.Name = "Template Translations Uploader"
 	app.Usage = "To start uploading run: $> ttu upload"
-	app.Version = "0.0.1"
+	app.Version = "0.0.2 (Yury's build)"
 	app.Compiled = time.Now()
 	app.EnableBashCompletion = true
 	app.HideHelp = false
 	app.HideVersion = false
 
 	return app, nil
-
 }
 
 func initCommands() []*cli.Command {
