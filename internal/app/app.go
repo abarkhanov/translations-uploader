@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"log"
 	"time"
 
@@ -12,7 +13,6 @@ func New() (*cli.App, error) {
 		Commands: initCommands(),
 	}
 	app.Name = "Template Translations Uploader"
-	app.Usage = "To start uploading run: $> ttu upload"
 	app.Version = "0.0.2 (Yury's build)"
 	app.Compiled = time.Now()
 	app.EnableBashCompletion = true
@@ -27,11 +27,24 @@ func initCommands() []*cli.Command {
 		{
 			Name:    "upload",
 			Aliases: []string{"u"},
-			Usage:   "Upload translations from files to destination API",
+			Usage:   "Upload translations from files to destination API: $>ttu upload",
 			Action: func(c *cli.Context) error {
 				err := uploadTranslations()
 				if err != nil {
 					log.Fatalf("Unable to execute command %s", err)
+				}
+				return nil
+			},
+		},
+		{
+			Name:    "download",
+			Aliases: []string{"d"},
+			Usage:   "Download translations from origin API to yaml files: $>ttu download",
+			Action: func(c *cli.Context) error {
+				err := downloadTranslations()
+				if err != nil {
+					fmt.Println("Unable to execute command", err)
+					return err
 				}
 				return nil
 			},
