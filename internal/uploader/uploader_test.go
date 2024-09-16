@@ -1,10 +1,10 @@
 package uploader
 
 import (
+	"github.com/abarkhanov/ttu/internal/config/upload_config"
 	"os"
 	"testing"
 
-	"github.com/abarkhanov/ttu/internal/config"
 	"github.com/abarkhanov/ttu/testing/mocks"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
@@ -28,7 +28,7 @@ func TestLoadTranslations(t *testing.T) {
 	err = os.Setenv("ORGID_THALYS", thalysID)
 	require.NoError(t, err)
 
-	c, err := config.Load()
+	c, err := upload_config.LoadUploadCfg()
 	require.NoError(t, err)
 
 	client := &mocks.ApiTranslationsClient{}

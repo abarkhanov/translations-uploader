@@ -2,12 +2,12 @@ package uploader
 
 import (
 	"fmt"
+	"github.com/abarkhanov/ttu/internal/config/upload_config"
 	"io/ioutil"
 	"log"
 	"path/filepath"
 	"strings"
 
-	"github.com/abarkhanov/ttu/internal/config"
 	uuid "github.com/satori/go.uuid"
 	"gopkg.in/yaml.v2"
 )
@@ -34,7 +34,7 @@ type Item struct {
 	Value string `json:"value" yaml:"value"`
 }
 
-func LoadTranslations(apiClient ApiTranslationsClient, c *config.Config) error {
+func LoadTranslations(apiClient ApiTranslationsClient, c *upload_config.UploadConfig) error {
 	list, err := getTranslationsList(c)
 	if err != nil {
 		return err
@@ -68,7 +68,7 @@ func LoadTranslations(apiClient ApiTranslationsClient, c *config.Config) error {
 	return nil
 }
 
-func getTranslationsList(c *config.Config) (translationsList, error) {
+func getTranslationsList(c *upload_config.UploadConfig) (translationsList, error) {
 	data := make(map[string]map[string]map[string]map[string]string)
 	res := make(map[string]map[string][]map[string]string)
 	orgList := make(map[string]struct{})
@@ -160,7 +160,7 @@ func loadDir(path string) ([]string, error) {
 	return list, nil
 }
 
-func getTranslationsKey(c *config.Config, filename string) string {
+func getTranslationsKey(c *upload_config.UploadConfig, filename string) string {
 	orgID := uuid.UUID{}.String()
 	if strings.Contains(filename, "sncf-") {
 		orgID = c.OrgIDSNCF
@@ -172,11 +172,6 @@ func getTranslationsKey(c *config.Config, filename string) string {
 	}
 	t := strings.ReplaceAll(filename, ".yaml", "")
 
-	// tmp - Remove this if when enum naming will be fixed
-	//if strings.Contains(t, "trip-cancelled") {
-	//	t = strings.ReplaceAll(t, "trip-cancelled", "trip-canceled")
-	//}
-
 	return orgID + " " + t
 }
 
@@ -184,7 +179,7 @@ func getLocale(locale string) string {
 	return locale[0:2] + "-" + locale[2:]
 }
 
-func isFileBlacklisted(c *config.Config, filename string) bool {
+func isFileBlacklisted(c *upload_config.UploadConfig, filename string) bool {
 	if strings.Contains(filename, "sncf-") && c.OrgIDSNCF == "" {
 		fmt.Printf("SNCF orgID wasn't passed ")
 		return true

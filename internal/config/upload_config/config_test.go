@@ -1,4 +1,4 @@
-package config
+package upload_config
 
 import (
 	"os"
@@ -14,14 +14,18 @@ func TestLoad(t *testing.T) {
 	key := "1234qwer"
 	host := "http://example.com"
 
-	err := os.Setenv("TRANSLATIONS_PATH", path)
+	err := os.Setenv("SOURCE_TRANSLATIONS_PATH", path)
 	require.NoError(t, err)
 	err = os.Setenv("TARGET_API_AUTHORIZATION_KEY", key)
 	require.NoError(t, err)
 	err = os.Setenv("TARGET_API_HOST", host)
 	require.NoError(t, err)
+	err = os.Setenv("ORGID_SNCF", "'\n'")
+	require.NoError(t, err)
+	err = os.Setenv("ORGID_THALYS", "'\n'")
+	require.NoError(t, err)
 
-	c, err := Load()
+	c, err := LoadUploadCfg()
 	require.NoError(t, err)
 
 	assert.Equal(t, path, c.TranslationsPath)
@@ -33,12 +37,12 @@ func TestLoadNoAPIHost(t *testing.T) {
 	path := "./translations"
 	key := "1234qwer"
 
-	err := os.Setenv("TRANSLATIONS_PATH", path)
+	err := os.Setenv("SOURCE_TRANSLATIONS_PATH", path)
 	require.NoError(t, err)
 	err = os.Setenv("TARGET_API_AUTHORIZATION_KEY", key)
 	require.NoError(t, err)
 
-	_, err = Load()
+	_, err = LoadUploadCfg()
 	require.Error(t, err)
 	assert.Equal(t, "required key TARGET_API_HOST missing value", err.Error())
 }
@@ -47,12 +51,12 @@ func TestLoadNoAPIKey(t *testing.T) {
 	path := "./translations"
 	host := "http://example.com"
 
-	err := os.Setenv("TRANSLATIONS_PATH", path)
+	err := os.Setenv("SOURCE_TRANSLATIONS_PATH", path)
 	require.NoError(t, err)
 	err = os.Setenv("TARGET_API_HOST", host)
 	require.NoError(t, err)
 
-	_, err = Load()
+	_, err = LoadUploadCfg()
 	require.Error(t, err)
 	assert.Equal(t, "required key TARGET_API_AUTHORIZATION_KEY missing value", err.Error())
 }
